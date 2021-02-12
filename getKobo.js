@@ -12,7 +12,7 @@ alterState(state => {
         type: 'sharks_rays', //survey type/ template/ form group
         name: 'Sharks and Rays Demo', //form name to display in the database
         owner: 'openfn', //Kobo form Owner
-      }
+      },
       //=================================================================//
     ].map(survey => ({
       formId: survey.id,
