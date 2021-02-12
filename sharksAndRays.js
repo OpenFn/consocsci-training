@@ -9,19 +9,24 @@ upsert('kobodata', 'form_id', {
   longitude: state => state.data.body.gps.split(' ')[1], // parse "_geolocation": [ 11.178402, 31.8446]"
 });
 
-// upsert('sharksrays_form', 'answer_id', {
-//   form_id: dataValue('formId'), //FK
-//   answer_id: dataValue('body._id'), //PK
-//   country: dataValue('body.country'),
-//   survey_type: dataValue('body.survey'),
-// });
+upsert('sharksrays_form', 'answer_id', {
+  form_id: dataValue('formId'), //FK
+  answer_id: dataValue('body._id'), //PK
+  country: dataValue('body.country'),
+  survey_type: dataValue('body.survey'),
+});
 
-// // TODO: show how to implement each() for each _attachments[...] element in this repeat group
-// // upsertMany(
-// //   'sharksrays_attachments',
-// //   'attachment_id', // these repeat group elements have a uid, so we can upsertMany
-// //   state => [1, 2, 3] // some function that maps "_attachments" -> answer_id, attachment_id, url, file_name
-// // );
+// TODO: show how to implement each() for each _attachments[...] element in this repeat group
+upsertMany(
+  'sharksrays_attachments',
+  'attachment_id', // these repeat group elements have a uid, so we can upsertMany
+  state => state.data.body._attachments.map(thing => ({
+    answer_id: state.data.body._id,
+    attachment_id: thing.id,
+    url: thing.download_url,
+    file_name: thing.filename,
+  }))
+);
 
 // upsert('sharksrays_boat', 'boat_id', {
 //   // TODO: Show how to make a custom id
