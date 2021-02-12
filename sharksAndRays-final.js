@@ -17,15 +17,21 @@ upsert('sharksrays_form', 'answer_id', {
 });
 
 // TODO: show how to implement each() for each _attachments[...] element in this repeat group
-// upsertMany(
-//   'sharksrays_attachments',
-//   'attachment_id', // these repeat group elements have a uid, so we can upsertMany
-//   state => [1, 2, 3] // some function that maps "_attachments" -> answer_id, attachment_id, url, file_name
-// );
+upsertMany(
+  'sharksrays_attachments',
+  'attachment_id', // these repeat group elements have a uid, so we can upsertMany
+  state =>
+    state.data.body._attachments.map(a => ({
+      answer_id: state.data.body._id, //FK
+      attachment_id: a.id, // TODO: update mapping for each element
+      url: a.download_url, // TODO: update mapping for each element
+      file_name: a.filename, // TODO: update mapping for each element
+    }))
+);
 
 upsert('sharksrays_boat', 'boat_id', {
   // TODO: Show how to make a custom id
-  // boat_id: with 'boat/boat_type' and '_id' (sample output; "dhow-85252496")
+  boat_id: state => state.data.body['boat/boat_type'] + '-' + state.data.body['_id'],
   answer_id: dataValue('body._id'), // child to parent sharksRaysForm table
   boat_type: dataValue('body.boat/boat_type'),
   target_catch: dataValue('body.boat/target_catch'),
@@ -34,9 +40,16 @@ upsert('sharksrays_boat', 'boat_id', {
 // TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
 // for each element ==> we therefore overwrite this data in the DB by...
 // (1) deleting existing records, and (2) inserting many repeat group elements
-// sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
+sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
-// insertMany(
-//   'sharksRays_boatcatchdetails',
-//   state => [1, 2, 3] // some function that maps "boat/catch_details" -> boat_id, answer_id, type, weight
-// );
+insertMany(
+  'sharksrays_boatcatchdetails', // for each "boat/catch_details": [...]
+  state =>
+    state.data.body['boat/catch_details'].map(d => ({
+      // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
+      boat_id: state.data.body['boat/boat_type'] + '-' + state.data.body['_id'],
+      answer_id: state.data.body._id, // child to parent sharksRaysForm table
+      type: d['boat/catch_details/type'],
+      weight: d['boat/catch_details/weight'],
+    }))
+);
