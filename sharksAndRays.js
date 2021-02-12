@@ -1,4 +1,3 @@
-// Your job goes here.
 upsert('kobodata', 'formid',
  {
   //columnName: dataValue('koboQuestion'),
