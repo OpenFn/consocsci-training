@@ -1,6 +1,6 @@
 upsert('kobodata', 'formid', {
   // columnName: dataValue('koboQuestion'),
-  formId: dataValue('formId'), // columnName: dataValue
+  formId: dataValue('formId'), 
   formName: dataValue('formName'),
   formType: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
@@ -29,15 +29,16 @@ upsertMany(
 );
 
 upsert('sharksRays_Boat', 'boatId', {
-  // TODO: SHOW HOW TO MAKE CUSTOM ID
+  // TODO: SHOW HOW TO MAKE CUSTOM UID
   // boatId: return customId: boat/boat_type + "-" + _id (sample output; "dhow-85252496")
   answerId: dataValue('body._id'), // child to parent sharksRaysForm table
   boatType: dataValue('body.boat/boat_type'),
   targetCatch: dataValue('body.boat/target_catch'),
 });
 
-// Below the catch_details repeat group elements do NOT have a uid, so we can must overwrite
-// we do this by (1) deleting existing records, and (2) inserting many repeat group elements
+// TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
+// for each element ==> we therefore overwrite this data in the DB by...
+// (1) deleting existing records, and (2) inserting many repeat group elements
 sql({
   query: state =>
     `DELETE FROM sharksRays_BoatCatchDetails where AnswerId = '${state.data.body._id}'`,
