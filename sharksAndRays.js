@@ -5,8 +5,8 @@ upsert('kobodata', 'form_id', {
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
   // TODO: here can we show then how to do data cleaning and use alterState(...)
-  latitude: state => state.data.body._geolocation[0], // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
-  longitude: state => state.data.body.gps.split(' ')[1], // parse "_geolocation": [ 11.178402, 31.8446]"
+  latitude: state => state.data.body['gps'].split(" ")[0], // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
+  longitude: state => state.data.body['gps'].split(" ")[1]
 });
 
 upsert('sharksrays_form', 'answer_id', {
@@ -20,21 +20,22 @@ upsert('sharksrays_form', 'answer_id', {
 upsertMany(
   'sharksrays_attachments',
   'attachment_id', // these repeat group elements have a uid, so we can upsertMany
-  state => state.data.body._attachments.map(thing => ({
-    answer_id: state.data.body._id,
-    attachment_id: thing.id,
-    url: thing.download_url,
-    file_name: thing.filename,
-  }))
+  state =>
+    state.data.body._attachments.map(a => ({
+      answer_id: state.data.body._id, //FK
+      attachment_id: a.id, // TODO: update mapping for each element
+      url: a.download_url, // TODO: update mapping for each element
+      file_name: a.filename, // TODO: update mapping for each element
+    }))
 );
 
-// upsert('sharksrays_boat', 'boat_id', {
-//   // TODO: Show how to make a custom id
-//   // boat_id: with 'boat/boat_type' and '_id' (sample output; "dhow-85252496")
-//   answer_id: dataValue('body._id'), // child to parent sharksRaysForm table
-//   boat_type: dataValue('body.boat/boat_type'),
-//   target_catch: dataValue('body.boat/target_catch'),
-// });
+upsert('sharksrays_boat', 'boat_id', {
+  // TODO: Show how to make a custom id
+  boat_id: state => state.data.body['boat/boat_type'] + '-' + state.data.body['_id'],
+  answer_id: dataValue('body._id'), // child to parent sharksRaysForm table
+  boat_type: dataValue('body.boat/boat_type'),
+  target_catch: dataValue('body.boat/target_catch'),
+});
 
 // // TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
 // // for each element ==> we therefore overwrite this data in the DB by...
