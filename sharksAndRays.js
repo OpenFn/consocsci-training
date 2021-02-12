@@ -1,6 +1,6 @@
 upsert('kobodata', 'formid', {
   // columnName: dataValue('koboQuestion'),
-  formId: dataValue('formId'), 
+  formId: dataValue('formId'), //set PK
   formName: dataValue('formName'),
   formType: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
@@ -10,8 +10,8 @@ upsert('kobodata', 'formid', {
 });
 
 upsert('sharksraysform', 'answerid', {
-  formId: dataValue('formId'), // relate to parent koboData record
-  answerId: dataValue('body._id'),
+  formId: dataValue('formId'), //FK
+  answerId: dataValue('body._id'), //PK
   country: dataValue('body.country'),
   surveyType: dataValue('body.survey'),
 });
@@ -21,10 +21,10 @@ upsertMany(
   'sharksRays_Attachments',
   'attachmentId', // these repeat group elements have a uid, so we can upsertMany
   {
-    answerId: dataValue('body._id'), // child to parent sharksRaysForm table
-    attachmentId: dataValue('body._attachments[*].id'), // update when implementing for each()
-    url: dataValue('body._attachments[*].download_url'), // update when implementing for each()
-    fileName: dataValue('body._attachments[*].filename'), // update when implementing for each()
+    answerId: dataValue('body._id'), //FK
+    attachmentId: dataValue('body._attachments[*].id'), // TODO: update mapping for each element
+    url: dataValue('body._attachments[*].download_url'), // TODO: update mapping for each element
+    fileName: dataValue('body._attachments[*].filename'), // TODO: update mapping for each element
   }
 );
 
