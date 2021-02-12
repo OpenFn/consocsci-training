@@ -5,8 +5,8 @@ upsert('kobodata', 'form_id', {
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
   // TODO: here can we show then how to do data cleaning and use alterState(...)
-  // latitude: dataValue('_geolocation'), // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
-  // longitude: dataValue('_geolocation'), // parse "_geolocation": [ 11.178402, 31.8446]"
+  latitude: state => state.data.body['gps'].split(" ")[0], // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
+  longitude: state => state.data.body['gps'].split(" ")[1]
 });
 
 upsert('sharksrays_form', 'answer_id', {
