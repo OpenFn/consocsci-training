@@ -1,19 +1,19 @@
-//== Job to be used for fetching data from Kobo from ConSocSci Training acct on repeated, timer basis  ==//
+// == Job to be used for fetching data from Kobo from ConSocSci Training acct on repeated, timer basis  ==//
 // This can be run on-demand at any time by clicking "run" //
 alterState(state => {
   // Set a manual cursor if you'd like to only fetch data after this date.
   state.data = {
     surveys: [
-      ///====***FOR ADMINS TO UPDATE & CHANGE FORMS ***=====================//
-      //** Specify new forms to fetch here from the `wcs_training` account **//
-      //{ id: 'aMpW7wwRBRbtCfidtK2rRn', tag: 'bns_survey', name: 'Form Project Name', owner: 'wcs'},
+      // /====***FOR ADMINS TO UPDATE & CHANGE FORMS ***=====================//
+      // ** Specify new forms to fetch here from the `wcs_training` account **//
+      // { id: 'aMpW7wwRBRbtCfidtK2rRn', tag: 'bns_survey', name: 'Form Project Name', owner: 'wcs'},
       {
         id: 'adiNTJXFtpKEDGGZFMUtgQ', //unique Id from form URL
         type: 'sharks_rays', //survey type/ template/ form group
         name: 'Sharks and Rays Demo', //form name to display in the database
         owner: 'openfn', //Kobo form Owner
       },
-      //=================================================================//
+      // =================================================================//
     ].map(survey => ({
       formId: survey.id,
       type: survey.type,
@@ -42,8 +42,8 @@ each(dataPath('surveys[*]'), state => {
     });
     const count = state.data.submissions.length;
     console.log(`Fetched ${count} submissions from ${formId} (${type}).`);
-    //Once we fetch the data, we want to post each individual Kobo survey
-    //back to the OpenFn inbox to run through the jobs =========================
+    // Once we fetch the data, we want to post each individual Kobo survey
+    // back to the OpenFn inbox to run through the jobs =========================
     return each(dataPath('submissions[*]'), state => {
       console.log(`Posting ${state.data.i + 1} of ${count}...`);
       return post(state.configuration.openfnInboxUrl, {
