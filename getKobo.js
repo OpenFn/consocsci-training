@@ -13,6 +13,13 @@ alterState(state => {
         name: 'Sharks and Rays Demo', //form name to display in the database
         owner: 'openfn', //Kobo form Owner
       },
+      {
+        id: 'aDgPJqN4SAYohZ4ZueEeYU', //unique Id from form URL
+        type: 'arcadia', //survey type/ template/ form group
+        name: 'Arcadia Data Collection Site Survey', //form name to display in the database
+        owner: 'openfn', //Kobo form Owner
+      },
+      
       // =================================================================//
     ].map(survey => ({
       formId: survey.id,
@@ -20,7 +27,7 @@ alterState(state => {
       name: survey.name,
       owner: survey.owner,
       url: `https://kf.kobotoolbox.org/api/v2/assets/${survey.id}/data/?format=json`,
-      query: ``,
+      query: `limit=5`,
     })),
   };
   return state;
