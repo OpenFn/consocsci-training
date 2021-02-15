@@ -27,7 +27,7 @@ alterState(state => {
       name: survey.name,
       owner: survey.owner,
       url: `https://kf.kobotoolbox.org/api/v2/assets/${survey.id}/data/?format=json`,
-      query: `limit=5`,
+      query: `&limit=5`,
     })),
   };
   return state;
