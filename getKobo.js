@@ -7,12 +7,18 @@ alterState(state => {
       // /====***FOR ADMINS TO UPDATE & CHANGE FORMS ***=====================//
       // ** Specify new forms to fetch here from the `wcs_training` account **//
       // { id: 'aMpW7wwRBRbtCfidtK2rRn', tag: 'bns_survey', name: 'Form Project Name', owner: 'wcs'},
-      {
+      /*{
         id: 'adiNTJXFtpKEDGGZFMUtgQ', //unique Id from form URL
         type: 'sharks_rays', //survey type/ template/ form group
         name: 'Sharks and Rays Demo', //form name to display in the database
         owner: 'openfn', //Kobo form Owner
-      },
+      },*/
+      {
+        id: 'aGWTfpASm4VgYPW9miSJ8H', //unique Id from form URL
+        type: 'vegetation', //survey type/ template/ form group
+        name: 'Vegetation Classification & Tree Measurement', //form name to display in the database
+        owner: 'wcs_uganda_carbon', //Kobo form Owner
+      }
       /*{ fyi, only shared with openfn_kobo account
         id: 'aDgPJqN4SAYohZ4ZueEeYU', //unique Id from form URL
         type: 'arcadia', //survey type/ template/ form group
