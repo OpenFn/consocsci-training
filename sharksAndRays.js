@@ -4,7 +4,7 @@ upsert('kobodata', 'form_id', {
   form_name: dataValue('formName'),
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
-  // TODO: here can we show then how to do data cleaning and use alterState(...)
+  // TODO: how do we manipulate data in the submission?
   // latitude: dataValue('body.gps'), // parse "gps": "11.178402, 31.8446" // split text?
   // longitude: dataValue('body._geolocation'), // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
 });
@@ -16,17 +16,16 @@ upsert('sharksrays_form', 'answer_id', {
   survey_type: dataValue('body.survey'),
 });
 
-// TODO: show how to implement each() for each _attachments[...] element in this repeat group
+// TODO: show how to implement upsertMany (or each?)
 upsertMany(
   'sharksrays_attachments',
   'attachment_id', // these repeat group elements have a uid, so we can upsertMany
-  state =>
-    state.data.body._attachments.map(a => ({
-      answer_id: state.data.body._id, //FK
-      attachment_id: a.id, // TODO: update mapping for each element
-      url: a.download_url, // TODO: update mapping for each element
-      file_name: a.filename, // TODO: update mapping for each element
-    }))
+  {
+    answerId: dataValue('body._id'), //FK
+    attachmentId: dataValue('body._attachments[*].id'), // TODO: update mapping for each element
+    url: dataValue('body._attachments[*].download_url'), // TODO: update mapping for each element
+    fileName: dataValue('body._attachments[*].filename'), // TODO: update mapping for each element
+  }
 );
 
 upsert('sharksrays_boat', 'boat_id', {
@@ -42,6 +41,7 @@ upsert('sharksrays_boat', 'boat_id', {
 // // (1) deleting existing records, and (2) inserting many repeat group elements
 // // sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
+// Note the use of each(...)
 // // insertMany(
 // //   'sharksRays_boatcatchdetails',
 // //   state => [1, 2, 3] // some function that maps "boat/catch_details" -> boat_id, answer_id, type, weight
