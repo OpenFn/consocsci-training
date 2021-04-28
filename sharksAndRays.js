@@ -1,6 +1,6 @@
 upsert('kobodata', 'form_id', {
   // columnName: dataValue('koboQuestion'),
-  form_id: dataValue('formId'), //set PK
+  form_id: dataValue('formId'), // TODO: warm up time! set the PK
   form_name: dataValue('formName'),
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),

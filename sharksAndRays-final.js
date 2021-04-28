@@ -10,7 +10,7 @@ upsert('kobodata', 'form_id', {
 });
 
 upsert('sharksrays_form', 'answer_id', {
-  form_id: dataValue('formId'), //FK
+  form_id: dataValue('_xform_id_string'), //FK
   answer_id: dataValue('body._id'), //PK
   country: dataValue('body.country'),
   survey_type: dataValue('body.survey'),
