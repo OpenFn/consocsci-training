@@ -45,7 +45,7 @@ sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state
 each(
   dataPath('boat[*]'),
   upsertMany('sharksrays_boatcatchdetails', 'GeneratedUuid', state => {
-    const catch_details = state.data['boat/catch_details'] || [];
+    const catch_details = state.data.boat['boat/catch_details'] || [];
     return catch_details.map(d => ({
       // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
       boat_id: d['boat/boat_type'] + '-' + state.data.body['_id'],
