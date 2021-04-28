@@ -5,8 +5,8 @@ upsert('kobodata', 'form_id', {
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
   // TODO: how do we manipulate data in the submission?
-  // latitude: dataValue('body.gps'), // parse "gps": "11.178402, 31.8446" // split text?
-  // longitude: dataValue('body._geolocation'), // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
+  latitude: state => state.data.body.gps.split(" ")[0], // parse "gps": "11.178402, 31.8446" // split text?
+  longitude: dataValue('body._geolocation')[1], // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
 });
 
 // upsert('sharksrays_form', 'answer_id', {
