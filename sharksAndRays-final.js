@@ -44,14 +44,14 @@ sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state
 
 each(
   dataPath('body.boat[*]'),
-  upsertMany('sharksrays_boatcatchdetails', 'GeneratedUuid', state => {
-    const catch_details = state.data.body.boat['boat/catch_details'] || [];
-    return catch_details.map(d => ({
+  insertMany('sharksrays_boatcatchdetails', state => {
+    const catch_details = state.data['boat/catch_details'] || [];
+    return catch_details.map((cd, i) => ({
       // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
-      boat_id: d['boat/boat_type'] + '-' + state.data.body['_id'],
+      boat_id: cd['boat/boat_type'] + '-' + state.data.body['_id'],
       answer_id: state.data.body._id, // child to parent sharksRaysForm table
-      type: d['boat/catch_details/type'],
-      weight: d['boat/catch_details/weight'],
+      type: cd['boat/catch_details/type'],
+      weight: cd['boat/catch_details/weight'],
     }));
   })
 );
