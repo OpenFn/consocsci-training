@@ -1,23 +1,13 @@
-console.log(
-  state.data.body._version,
-  dataValue('formName'),
-  dataValue('formName')(state)
-);
-
-// note... these are usually analogous
-// state.data.formName;
-// dataValue('formName');
-
-// upsert('kobodata', 'form_id', {
-//   // columnName: dataValue('koboQuestion'),
-//   form_id: dataValue('formId'), // TODO: warm up time! set the PK
-//   form_name: dataValue('formName'),
-//   form_type: dataValue('formType'),
-//   submission_date: dataValue('body._submission_time'),
-//   // TODO: how do we manipulate data in the submission?
-//   // latitude: dataValue('body.gps'), // parse "gps": "11.178402, 31.8446" // split text?
-//   // longitude: dataValue('body._geolocation'), // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
-// });
+upsert('kobodata', 'form_id', {
+  // columnName: dataValue('koboQuestion'),
+  form_id: dataValue('formId'), // TODO: warm up time! set the PK
+  form_name: dataValue('formName'),
+  form_type: dataValue('formType'),
+  submission_date: dataValue('body._submission_time'),
+  // TODO: how do we manipulate data in the submission?
+  // latitude: dataValue('body.gps'), // parse "gps": "11.178402, 31.8446" // split text?
+  // longitude: dataValue('body._geolocation'), // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
+});
 
 // upsert('sharksrays_form', 'answer_id', {
 //   form_id: dataValue('formId'), //FK
