@@ -1,4 +1,13 @@
-console.log(state.data.body._status);
+console.log(
+  state.data.body._version,
+  dataValue('formName'),
+  dataValue('formName')(state)
+);
+
+// note... these are usually analogous
+// state.data.formName;
+// dataValue('formName');
+
 // upsert('kobodata', 'form_id', {
 //   // columnName: dataValue('koboQuestion'),
 //   form_id: dataValue('formId'), // TODO: warm up time! set the PK
