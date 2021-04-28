@@ -43,13 +43,13 @@ upsert('sharksrays_boat', 'boat_id', {
 sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
 each(
-  dataPath('body.boat[*]'),
+  merge(dataPath('body.boat[*]'), fields(field('answerId', dataValue('body._id')))),
   insertMany('sharksrays_boatcatchdetails', state => {
     const catch_details = state.data['boat/catch_details'] || [];
     return catch_details.map((cd, i) => ({
       // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
-      boat_id: cd['boat/boat_type'] + '-' + state.data.body['_id'],
-      answer_id: state.data.body._id, // child to parent sharksRaysForm table
+      boat_id: cd['boat/boat_type'] + '-' + state.data.answerId,
+      answer_id: state.data.answerId, // child to parent sharksRaysForm table
       type: cd['boat/catch_details/type'],
       weight: cd['boat/catch_details/weight'],
     }));
