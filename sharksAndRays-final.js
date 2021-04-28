@@ -1,6 +1,6 @@
 upsert('kobodata', 'form_id', {
   // columnName: dataValue('koboQuestion'),
-  form_id: dataValue('formId'), //set PK
+  form_id: dataValue('body._xform_id_string'), //set PK
   form_name: dataValue('formName'),
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
@@ -45,11 +45,11 @@ sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state
 insertMany(
   'sharksrays_boatcatchdetails', // for each "boat/catch_details": [...]
   state =>
-    state.data.body['boat/catch_details'].map(d => ({
+   each(dataPath('body.boat[*]'), dataValue('boat/catch_details').map(d => ({
       // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
-      boat_id: state.data.body['boat/boat_type'] + '-' + state.data.body['_id'],
+      boat_id: d['boat/boat_type'] + '-' + state.data.body['_id'],
       answer_id: state.data.body._id, // child to parent sharksRaysForm table
       type: d['boat/catch_details/type'],
       weight: d['boat/catch_details/weight'],
-    }))
+    })))
 );
