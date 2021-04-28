@@ -36,13 +36,13 @@ upsert('sharksrays_boat', 'boat_id', {
   target_catch: dataValue('body.boat/target_catch'),
 });
 
-// // TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
-// // for each element ==> we therefore overwrite this data in the DB by...
-// // (1) deleting existing records, and (2) inserting many repeat group elements
-// // sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
+// TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
+// for each element ==> we therefore overwrite this data in the DB by...
+// (1) deleting existing records, and (2) inserting many repeat group elements
+// sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
 // Note the use of each(...)
-// // insertMany(
-// //   'sharksRays_boatcatchdetails',
-// //   state => [1, 2, 3] // some function that maps "boat/catch_details" -> boat_id, answer_id, type, weight
-// // );
+// insertMany(
+//   'sharksRays_boatcatchdetails',
+//   state => [1, 2, 3] // some function that maps "boat/catch_details" -> boat_id, answer_id, type, weight
+// );
