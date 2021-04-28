@@ -5,8 +5,8 @@ upsert('kobodata', 'form_id', {
   form_type: dataValue('formType'),
   submission_date: dataValue('body._submission_time'),
   // TODO: here can we show then how to do data cleaning and use alterState(...)
-  latitude: state => state.data.body['gps'].split(" ")[0], // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
-  longitude: state => state.data.body['gps'].split(" ")[1]
+  latitude: state => state.data.body['gps'].split(' ')[0], // parse "_geolocation": [ 11.178402, 31.8446]" // ADD DATA CLEANING
+  longitude: state => state.data.body['gps'].split(' ')[1],
 });
 
 upsert('sharksrays_form', 'answer_id', {
@@ -42,14 +42,16 @@ upsert('sharksrays_boat', 'boat_id', {
 // (1) deleting existing records, and (2) inserting many repeat group elements
 sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
-insertMany(
-  'sharksrays_boatcatchdetails', // for each "boat/catch_details": [...]
-  state =>
-   each(dataPath('body.boat[*]'), dataValue('boat/catch_details').map(d => ({
+each(
+  dataPath('boat[*]'),
+  upsertMany('sharksrays_boatcatchdetails', 'GeneratedUuid', state => {
+    const catch_details = state.data['boat/catch_details'] || [];
+    return catch_details.map(d => ({
       // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
       boat_id: d['boat/boat_type'] + '-' + state.data.body['_id'],
       answer_id: state.data.body._id, // child to parent sharksRaysForm table
       type: d['boat/catch_details/type'],
       weight: d['boat/catch_details/weight'],
-    })))
+    }));
+  })
 );
