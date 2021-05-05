@@ -7,8 +7,6 @@ upsert('kobodata', 'form_id', {
   // TODO: how do we manipulate data in the submission?
   latitude: state => state.data.body.gps.split(" ")[0], // parse "gps": "11.178402, 31.8446" // split text?
   longitude: dataValue('body._geolocation')[1], // parse "_geolocation": [ 11.178402, 31.8446] // pick from array?
-}, {
-  writeSql: true,
 });
 
 // upsert('sharksrays_form', 'answer_id', {
