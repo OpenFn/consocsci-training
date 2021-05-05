@@ -12,6 +12,11 @@ upsert(
   'AnswerId', // a DB column with a unique constraint OR a CONSTRAINT NAME
   { 
     AnswerId: dataValue('body._id'), 
+    KoboDataId: findValue({
+      uuid: 'KoboDataId',
+      relation: 'KoboDataForms',
+      where: { TableId:  dataValue('tableId') }
+    }),
     SurveyDate: dataValue('body.today'), 
     Age: dataValue('body.age'), 
     Sex: dataValue('body.sex'), 
