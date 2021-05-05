@@ -16,7 +16,7 @@ upsert(
       uuid: 'KoboDataId',
       relation: 'KoboDataForms',
       where: { 'TableId':  dataValue('tableId') }
-    }),
+    })(state),
     SurveyDate: dataValue('body.today'), 
     Age: dataValue('body.age'), 
     Sex: dataValue('body.sex'), 
