@@ -1,5 +1,5 @@
 upsert(
-  'KoboData', // the DB table
+  'KoboDataForms', // the DB table
   'TableId', // a DB column with a unique constraint OR a CONSTRAINT NAME
   { 
     FormName: dataValue('formName'), 
