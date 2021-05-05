@@ -15,8 +15,8 @@ upsert(
     KoboDataId: findValue({
       uuid: 'KoboDataId',
       relation: 'KoboDataForms',
-      where: { 'TableId':  dataValue('tableId') }
-    })(state),
+      where: { 'TableId':  state.data.tableId) }
+    }),
     SurveyDate: dataValue('body.today'), 
     Age: dataValue('body.age'), 
     Sex: dataValue('body.sex'), 
