@@ -16,30 +16,26 @@ upsert('sharksrays_form', 'answer_id', {
   survey_type: dataValue('body.survey'),
 });
 
-// TODO: show how to implement each() for each _attachments[...] element in this repeat group
 upsertMany(
   'sharksrays_attachments',
   'attachment_id', // these repeat group elements have a uid, so we can upsertMany
   state =>
     state.data.body._attachments.map(a => ({
       answer_id: state.data.body._id, //FK
-      attachment_id: a.id, // TODO: update mapping for each element
-      url: a.download_url, // TODO: update mapping for each element
-      file_name: a.filename, // TODO: update mapping for each element
+      attachment_id: a.id, 
+      url: a.download_url, 
+      file_name: a.filename, 
     }))
 );
 
 upsert('sharksrays_boat', 'boat_id', {
-  // TODO: Show how to make a custom id
   boat_id: state => state.data.body['boat/boat_type'] + '-' + state.data.body['_id'],
   answer_id: dataValue('body._id'), // child to parent sharksRaysForm table
   boat_type: dataValue('body.boat/boat_type'),
   target_catch: dataValue('body.boat/target_catch'),
 });
 
-// TODO: Demo how we handle repeat groups like `catch_details` where no uid is available
-// for each element ==> we therefore overwrite this data in the DB by...
-// (1) deleting existing records, and (2) inserting many repeat group elements
+
 sql(state => `DELETE FROM sharksrays_boatcatchdetails where answer_id = '${state.data.body._id}'`);
 
 each(
@@ -47,7 +43,6 @@ each(
   insertMany('sharksrays_boatcatchdetails', state => {
     const catch_details = state.data['boat/catch_details'] || [];
     return catch_details.map((cd, i) => ({
-      // TODO: SHOW HOW TO MAKE CUSTOM ID; map to boat
       boat_id: cd['boat/boat_type'] + '-' + state.data.answerId,
       answer_id: state.data.answerId, // child to parent sharksRaysForm table
       type: cd['boat/catch_details/type'],
